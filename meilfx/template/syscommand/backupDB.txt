@@ -1,0 +1,2 @@
+.{0}resources{0}mysql_bin{0}{1}{0}mysqldump --host={2} --port={3} --user={4} --password={5}  {6} --set-gtid-purged=OFF -r .{0}resources{0}script{0}{6}.dump
+
