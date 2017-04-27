@@ -163,26 +163,45 @@ public class Albero2044 {
     }
     
     
-    public static String getContiTabelle(String contoX){
+    public static boolean getContiTabelle(String contoX){
         
         String[] record_mc2 = cercaContiMc2(contoX);
         String[] record_mc3 = cercaContiMc3(contoX);
         String[] record_mc4 = cercaContiMc4(contoX);
         String[] record_mc5 = cercaContiMc5(contoX);
-
         int quantiMc2 = Integer.parseInt(record_mc2[2]);
         int quantiMc3 = Integer.parseInt(record_mc3[2]);
         int quantiMc4 = Integer.parseInt(record_mc4[2]);
         int quantiMc5 = Integer.parseInt(record_mc5[2]);
-        
+        int quanti =0;
         int quanti = quantiMc2+quantiMc3+quantiMc4+quantiMc5;
         
+        String[] IDesterni;
+        IDesterni[0] = record_mc2[3];
+        IDesterni[0] = record_mc3[3];
+        IDesterni[0] = record_mc4[3];
+        IDesterni[0] = record_mc5[3];
+
+        
         if(quanti ==0){
-             return "errore , nessun elemento trovato nei conti.";
+             res= false;
+        }else if(quanti>1){
+            res= false;
+        }else res= true;
+        
+        
+        for(i=0 ; i<IDesterni.length() ; i++){
+            int x=0 ;
+            for(x=0 ; x<IDesterni.length() ; x++){
+                if(i=x) continue;
+                
+                if(IDesterni[i] != IDesterni[x]){
+                    res = true;
+                }else res = false;
+            }
         }
         
-        return "";
-        
+        return res;
     }
 
 
