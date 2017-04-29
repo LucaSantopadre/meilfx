@@ -163,8 +163,9 @@ public class Albero2044 {
     }
     
     
-    public static boolean getContiTabelle(String contoX){
+    public static String getContiTabelle(String contoX , String codDitta) throws SQLException{
         
+        boolean res;
         String[] record_mc2 = cercaContiMc2(contoX);
         String[] record_mc3 = cercaContiMc3(contoX);
         String[] record_mc4 = cercaContiMc4(contoX);
@@ -173,35 +174,71 @@ public class Albero2044 {
         int quantiMc3 = Integer.parseInt(record_mc3[2]);
         int quantiMc4 = Integer.parseInt(record_mc4[2]);
         int quantiMc5 = Integer.parseInt(record_mc5[2]);
-        int quanti =0;
         int quanti = quantiMc2+quantiMc3+quantiMc4+quantiMc5;
         
-        String[] IDesterni;
+        String[] IDesterni = new String[4];
         IDesterni[0] = record_mc2[3];
-        IDesterni[0] = record_mc3[3];
-        IDesterni[0] = record_mc4[3];
-        IDesterni[0] = record_mc5[3];
+        IDesterni[1] = record_mc3[3];
+        IDesterni[2] = record_mc4[3];
+        IDesterni[3] = record_mc5[3];
+        String ID="";
 
-        
-        if(quanti ==0){
-             res= false;
-        }else if(quanti>1){
-            res= false;
-        }else res= true;
-        
-        
-        for(i=0 ; i<IDesterni.length() ; i++){
-            int x=0 ;
-            for(x=0 ; x<IDesterni.length() ; x++){
-                if(i=x) continue;
-                
-                if(IDesterni[i] != IDesterni[x]){
-                    res = true;
-                }else res = false;
+        if (quanti == 0) {
+            System.out.println("NON ESISTE");
+            return ("NON ESISTE");
+        } else {
+            res = quanti <= 1;
+        }
+
+        if (quanti == 1) {
+            int i, x;
+            for (i = 0; i < IDesterni.length; i++) {
+
+                if (IDesterni[i] == null) {
+                    continue;
+                }
+
+                for (x = 0; x < IDesterni.length; x++) {
+                    if (i == x) {
+                        continue;
+                    }
+
+                    if (!IDesterni[i].equals(IDesterni[x])) {
+                        res = true;
+                        ID = IDesterni[i];
+
+                    } else {
+                        res = false;
+                    }
+                }
             }
         }
+        if(res==true){
+            System.out.println("l'ID che andrà inserito è : "+ID);
+            scriviID_m_2044(ID , codDitta, contoX);
+            
+            return("ID : " + ID + "\nconto : " + contoX + "\nInseriti nella tabella 2044mv della ditta " + codDitta);
+        }else {
+            System.out.println("DOPPIONE");
+            return("DOPPIONE");
+        }
+    }
+    
+    
+    public static void scriviID_m_2044(String ID , String codDitta, String contoX ) throws SQLException{
         
-        return res;
+        String query = "UPDATE "+ codDitta + ".2044mv  SET m_ID = ?   WHERE conto = ?";
+
+        Connection conn = Connessione.getConnection();
+        PreparedStatement preparedStmt = conn.prepareStatement(query);
+        preparedStmt.setString(1, ID);
+        preparedStmt.setString(2, contoX);        
+
+        System.out.println(preparedStmt);
+
+        preparedStmt.execute();
+
+        //conn.close();
     }
 
 

@@ -87,9 +87,10 @@
                <content>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Button fx:id="btnCerca2044" layoutX="333.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnCerca2044Action" text="Cerca" />
-                        <Label layoutX="14.0" layoutY="18.0" text="Inserisci valore da cercare" />
-                        <ComboBox fx:id="cmbCerca2044" layoutX="170.0" layoutY="14.0" prefWidth="150.0" />
+                        <Button fx:id="btnInserisci2044" layoutX="410.0" layoutY="14.0" mnemonicParsing="false" onAction="#btnInserisci2044Action" text="Inserisci" />
+                        <Label layoutX="14.0" layoutY="18.0" prefHeight="17.0" prefWidth="226.0" text="Seleziona un conto da inserire in 2044mv" />
+                        <ComboBox fx:id="cmbInserisci2044" layoutX="247.0" layoutY="14.0" prefWidth="150.0" />
+                        <Button fx:id="btnInserisciTutti2044" layoutX="14.0" layoutY="77.0" mnemonicParsing="false" onAction="#btnInserisciTutti2044Action" prefHeight="25.0" prefWidth="104.0" text="Inserisci tutti" />
                      </children>
                   </AnchorPane>
                </content>

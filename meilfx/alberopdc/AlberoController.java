@@ -11,6 +11,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -82,7 +85,9 @@ public class AlberoController implements Initializable {
     @FXML
     Button btnCambiaOrdine = new Button();
     @FXML
-    Button btnCerca2044= new Button();
+    Button btnInserisci2044= new Button();
+    @FXML
+    Button btnInserisciTutti2044 = new Button();
     
     @FXML
     Label lblAzione = new Label();
@@ -109,7 +114,7 @@ public class AlberoController implements Initializable {
     TextField txt_idSelVisuale = new TextField();
     
     @FXML
-    ComboBox cmbCerca2044 = new ComboBox();
+    ComboBox cmbInserisci2044 = new ComboBox();
 
     @FXML
     RadioButton rdoCrea = new RadioButton();
@@ -142,7 +147,7 @@ public class AlberoController implements Initializable {
         
         ditta.setCodice("filuca");
         //prendo i conti dalla tabella della ditta con cui sono entrato
-        cmbCerca2044.setItems(getContiDitta(ditta.getCodice()));
+        cmbInserisci2044.setItems(getContiDitta(ditta.getCodice()));
         
         anchorFiglio.setVisible(false);
         caricaAlbero();
@@ -697,7 +702,6 @@ public class AlberoController implements Initializable {
     }
 
     
-    
     public void btnCancellaAction() throws SQLException {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         if (selectedItem.isLeaf()) {
@@ -731,19 +735,71 @@ public class AlberoController implements Initializable {
         }
     }
 
-    
 //***************************************TAB 2044MV ***********************************************
-  
+    public void btnInserisciTutti2044Action() throws SQLException, IOException {
+
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setHeaderText(null);
+
+        //lista dei conti presenti in 2044mx
+        ObservableList items = cmbInserisci2044.getItems();
+        //creo un file per i non esistenti...
+        File file_nonEsiste = new File("NonEsistenti.txt");
+        Path path = file_nonEsiste.toPath();
+
+        int i;
+        for (i = 0; i < items.size(); i++) {
+
+            String risultato = getContiTabelle((String) items.get(i), ditta.getCodice());
+            switch (risultato) {
+                case "NON ESISTE":
+                    alert.setTitle("Errore ricerca");
+                    alert.setContentText("Il conto " + (String) items.get(i) + " non esiste nelle tabelle dei conti");
+                    alert.showAndWait();
+//                    List<String> lines = Arrays.asList((String) items.get(i)); 
+//                    Files.write(file_nonEsiste.toPath(), lines, Charset.forName("UTF-8"), StandardOpenOption.APPEND);
+                    break;
+                case "DOPPIONE":
+                    alert.setAlertType(AlertType.WARNING);
+                    alert.setTitle("Errore ricerca");
+                    alert.setContentText("Il conto " + (String) items.get(i) + " è duplicato nelle tabelle dei conti");
+                    alert.showAndWait();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
 
     
-    public void btnCerca2044Action(){
-        
-        Alert alert = new Alert(AlertType.ERROR);
-        String codiceSel = (String) cmbCerca2044.getValue();
-        
-        System.out.println(getContiTabelle( "xx") );
-        
-    }
     
+    public void btnInserisci2044Action() throws SQLException {
+
+        Alert alert = new Alert(AlertType.ERROR);
+        alert.setHeaderText(null);
+        String contoSel = (String) cmbInserisci2044.getValue();
+
+        String risultato = getContiTabelle(contoSel, ditta.getCodice());
+        switch (risultato) {
+            case "NON ESISTE":
+                alert.setTitle("Errore riInserisci");
+                alert.setContentText("Il conto " + contoSel + " non è stato trovat nelle tabelle dei conti");
+                alert.showAndWait();
+                break;
+            case "DOPPIONE":
+                alert.setAlertType(AlertType.WARNING);
+                alert.setTitle("Errore ricerca");
+                alert.setContentText("Il conto " + contoSel + " è duplicato nelle tabelle dei conti");
+                alert.showAndWait();
+                break;
+            default:
+                alert.setAlertType(AlertType.INFORMATION);
+                alert.setTitle("Inserimento conto riuscito");
+                alert.setContentText(risultato);
+                alert.showAndWait();
+                break;
+        }
+    }
 
 }
