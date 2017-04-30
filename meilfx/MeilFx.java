@@ -32,7 +32,7 @@ public class MeilFx extends Application {
         // creo la connessione al db
         Connessione.getConnection();
         // carico la schermata in fxml
-        Parent root = FXMLLoader.load(getClass().getResource("alberopdc/Albero.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("login/login.fxml"));
         
 //        //tramite questi passaggi arrivo al bottone che è nel pannello in basso del root
 //        Parent node = (Parent) root.getChildrenUnmodifiable().get(0);
@@ -43,7 +43,7 @@ public class MeilFx extends Application {
         //setto la scene con il pannello root (fxml)
         Scene scene = new Scene(root);
         
-        stage.setTitle("Piano dei Conti");
+        stage.setTitle("MeilFx");
         stage.setScene(scene);
         stage.setMaximized(true);
         
