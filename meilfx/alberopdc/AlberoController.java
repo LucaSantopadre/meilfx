@@ -11,11 +11,8 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -24,7 +21,6 @@ import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -46,8 +42,7 @@ import javafx.stage.Stage;
 import static meilfx.alberopdc.sql.Albero2044.*;
 import static meilfx.alberopdc.sql.AlberoSql.*;
 import meilfx.ditta.Ditta;
-import meilfx.textfield.numeri.TextFieldVirgola;
-import static meilfx.textfield.numeri.TextFieldVirgola.numeric_Validation;
+import static meilfx.pub.TextFieldVirgola.numeric_Validation;
 
 /**
  * FXML Controller class
@@ -277,7 +272,7 @@ public class AlberoController implements Initializable {
         }
         //***** FINE creazione albero
 
-        //*** listener dell'albero
+        //*** LISTENER dell'albero
         albero.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {

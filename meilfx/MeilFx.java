@@ -32,7 +32,7 @@ public class MeilFx extends Application {
         // creo la connessione al db
         Connessione.getConnection();
         // carico la schermata in fxml
-        Parent root = FXMLLoader.load(getClass().getResource("login/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("login/Login.fxml"));
         
 //        //tramite questi passaggi arrivo al bottone che è nel pannello in basso del root
 //        Parent node = (Parent) root.getChildrenUnmodifiable().get(0);
