@@ -25,9 +25,10 @@
    <bottom>
       <AnchorPane prefHeight="42.0" prefWidth="1259.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
+            <Button layoutX="638.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnIndietroAction" text="F1-indietro" />
             <Button disable="true" layoutX="728.0" layoutY="9.0" mnemonicParsing="false" text="registra" />
-            <Button layoutX="932.0" layoutY="9.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="58.0" text="esci" />
+            <Button layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
+            <Button layoutX="932.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnEsciAction" prefHeight="25.0" prefWidth="64.0" text="ESC-esci" />
          </children>
       </AnchorPane>
    </bottom>

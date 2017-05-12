@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package meilfx.login;
 
 import java.io.IOException;
@@ -10,12 +5,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -28,6 +20,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import meilfx.login.sql.LoginSql;
 import static meilfx.login.sql.LoginSql.*;
+import meilfx.panels.Schermo;
+import static meilfx.panels.Schermo.SCREEN_SIZE;
+import static meilfx.panels.Schermo.STAGE;
 
 /**
  * FXML Controller class
@@ -36,31 +31,21 @@ import static meilfx.login.sql.LoginSql.*;
  */
 public class LoginController implements Initializable {
     
-    
-    @FXML
-    Button btnEntra = new Button();
     @FXML
     TextField txtEmail = new TextField();
     @FXML
-    PasswordField txtPassword = new PasswordField();
-
+    PasswordField txtPassword = new PasswordField(); 
+    @FXML
+    Button btnEntra = new Button();
+    
     public static LoginSql Login = new LoginSql();
     
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
        
+        // metodi di ascolto dei campi
         btnEntra.setOnKeyPressed((KeyEvent keyEvent) -> {
-            if (keyEvent.getCode() == KeyCode.ENTER)  {
-                try {
-                    btnEntraAction();
-                } catch (IOException ex) {
-                    Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-        
-        txtPassword.setOnKeyPressed((KeyEvent keyEvent) -> {
             if (keyEvent.getCode() == KeyCode.ENTER)  {
                 try {
                     btnEntraAction();
@@ -73,18 +58,15 @@ public class LoginController implements Initializable {
     }    
     
     
-    public void btnEntraAction() throws IOException{
-        System.out.println("entra premuto");
-        
+    public void btnEntraAction() throws IOException{  
+        // prendo email e password dalla schermata
         String email = txtEmail.getText();
         String password = txtPassword.getText();
         
         Alert alert = new Alert(AlertType.ERROR);
         alert.setHeaderText(null);
         
-        Stage stage;
-        Parent node;
-        Scene scene;
+        Parent newRoot;
 
         int tipoAccesso = verificaUtente(email, password);
         switch(tipoAccesso){
@@ -95,26 +77,15 @@ public class LoginController implements Initializable {
                 break;
                 
             case 1 : // amministratore
-                Login.setDatiAccesso(email);
-                
-                stage = (Stage) btnEntra.getScene().getWindow();
-                node = FXMLLoader.load(getClass().getResource("/meilfx/elencoditte/ElencoDitte.fxml"));
-                scene = new Scene( node);
-                stage.setScene(scene);
-                stage.setMaximized(true);
-                stage.show();
-                
+                Login.setDatiAccesso(email);               
+                newRoot = FXMLLoader.load(getClass().getResource("/meilfx/elencoditte/ElencoDitte.fxml"));
+                STAGE.getScene().setRoot(newRoot);              
                 break;
-            case 2 : // utente
-                Login.setDatiAccesso(email);
                 
-                stage = (Stage) btnEntra.getScene().getWindow();
-                node = FXMLLoader.load(getClass().getResource("/meilfx/elencoditte/ElencoDitte.fxml"));
-                scene = new Scene( node);
-                stage.setScene(scene);
-                stage.setMaximized(true);
-                stage.show();
-
+            case 2 : // utente
+                Login.setDatiAccesso(email);               
+                newRoot = FXMLLoader.load(getClass().getResource("/meilfx/elencoditte/ElencoDitte.fxml"));
+                STAGE.getScene().setRoot(newRoot); 
                 break;
                 
             default : // errore 

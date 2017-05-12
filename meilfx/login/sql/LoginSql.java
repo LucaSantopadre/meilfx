@@ -34,16 +34,14 @@ public class LoginSql {
         return this.idUtente;
     }
     
-    
+    //ritorna 1=amministratore   ,  2=utente   ,  0=errore
     public static int verificaUtente(String email , String password){
-
         try {
             String query = "SELECT id, passw, email \n"
                     + "FROM " + DATABASE + ".utenti \n" 
                     + "WHERE email = ? ";
 
             Connection conn = Connessione.getConnection();
-
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, email);
             System.out.println(preparedStmt);
@@ -70,29 +68,30 @@ public class LoginSql {
     
     
     
-    
+    //set dei dati campi di accesso in questa classe public
     public void setDatiAccesso(String email) {
-
         try {
             String query = "SELECT id, email \n"
                     + "FROM " + DATABASE + ".utenti \n"
                     + "WHERE email = ? ";
 
             Connection conn = Connessione.getConnection();
-
             PreparedStatement preparedStmt = conn.prepareStatement(query);
             preparedStmt.setString(1, email);
             System.out.println(preparedStmt);
             ResultSet rs = preparedStmt.executeQuery();
 
             while (rs.next()) {
-                this.email = rs.getString(2);
+                //amministratore
                 if(rs.getInt(1) >= 1000 && rs.getInt(1) < 2000){
-                    tipoAccesso = "amministratore";
-                    idUtente = rs.getInt(1);
+                    this.email = rs.getString(2);
+                    this.tipoAccesso = "amministratore";
+                    this.idUtente = rs.getInt(1);
+                //utente
                 }else if (rs.getInt(1) >= 2000 && rs.getInt(1) < 3000){
-                    tipoAccesso = "utente";
-                    idUtente = rs.getInt(1);
+                    this.email = rs.getString(2);
+                    this.tipoAccesso = "utente";
+                    this.idUtente = rs.getInt(1);
                 }
                
 

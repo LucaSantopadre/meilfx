@@ -24,9 +24,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.input.KeyCode;
+import static javafx.scene.input.KeyCode.F2;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import meilfx.elencoditte.ElencoDitteController;
 import meilfx.login.LoginController;
+import static meilfx.panels.Albero.addToAlbero;
+import meilfx.panels.Schermo;
+import static meilfx.panels.Schermo.SCENE;
+import static meilfx.panels.Schermo.STAGE;
 import meilfx.pub.Bottone;
 
 /**
@@ -37,133 +45,148 @@ import meilfx.pub.Bottone;
 public class AmministratoreController implements Initializable {
 
     @FXML
+    private Label lblTopSinistra;
+    @FXML
     private Label lblTopCentro;
     @FXML
     private Label lblTopDestra;
-    
+
     @FXML
     private TreeView albero;
     private TreeItem<String> root = new TreeItem<>("amministratore");
     private TreeItem<String> selectedItem = new TreeItem<>();
-    
+
     @FXML
     private Button btnStampa;
     @FXML
     private Button btnRegistra;
+    @FXML
+    private Button btnIndietro;
     @FXML// da inserire nel file fxml!!!
-    Bottone btnEsci = new Bottone() ; // con metodo esteso per uscire
+    Bottone btnEsci = new Bottone(); // con metodo esteso per uscire
 
-    String tipoAccesso = LoginController.Login.getTipoAccesso();
     int idUtente = LoginController.Login.getIdUtente();
     String emailUtente = LoginController.Login.getEmail();
+    String tipoAccesso = LoginController.Login.getTipoAccesso();
     
-    /**
-     * Initializes the controller class.
-     */
+    
+    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO  
-        lblTopCentro.setText("amministratore");
-        lblTopDestra.setText(idUtente+"_"+emailUtente);
-        
-        caricaAlbero();
+        //label
+        lblTopSinistra.setText(idUtente + "_" + emailUtente);
+        lblTopCentro.setText(tipoAccesso);
+        lblTopDestra.setText("AmministratoreController");
 
-    }    
+        //carico a video l'albero
+        caricaAlbero();
+        
+        /*
+        
+        //**-- event handler della scene **--
+        //ESC
+        SCENE.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+              if(key.getCode()==KeyCode.ESCAPE) {
+                  try {
+                      System.out.println("You pressed ESC");
+                      btnEsciAction();
+                  } catch (IOException ex) {
+                      Logger.getLogger(ElencoDitteController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+              }
+        }); 
+        //F1
+        SCENE.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+              if(key.getCode()==KeyCode.F1) {
+                  try {
+                      System.out.println("You pressed F1");
+                      btnIndietroAction();
+                  } catch (IOException ex) {
+                      Logger.getLogger(ElencoDitteController.class.getName()).log(Level.SEVERE, null, ex);
+                  }
+              }
+        });
+        //**-- fine event handler scene **--
+        
+        */
+        
+
+    }
+
     
-    
-    public void caricaAlbero(){
+    //***** INIZIO METODO PER CREARE L'ALBERO
+    public void caricaAlbero() {
         albero.setRoot(root);
         root.setExpanded(true);
-        
+
         List<String> menu = new ArrayList<>();
         menu.add("utenti");  //0 
         menu.add("backup"); //1
-        addToAlbero(root , menu);
-        
+        addToAlbero(root, menu);
+
         menu.clear();
         menu.add("crea utente"); //0.0
-        menu.add("assegna ditte"); //0.1
-        addToAlbero(root.getChildren().get(0) , menu);
-        
-           
+        menu.add("assegna ditte a utenti"); //0.1
+        addToAlbero(root.getChildren().get(0), menu);
+
         //*** LISTENER dell'albero
-        albero.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-            @Override
-            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-                selectedItem = (TreeItem<String>) newValue;
-
-                if (oldValue.equals(newValue)) {
-
-                    try {
-                        System.out.println("Selected Text : " + selectedItem.getValue());
-
-                        switch (selectedItem.getValue()) {
-                            case "assegna ditte":
-                                Stage stage = (Stage) albero.getScene().getWindow();
-                                Parent node = FXMLLoader.load(getClass().getResource("/meilfx/ammin/utenti/AssegnaDitte.fxml"));
-                                Scene scene = new Scene(node);
-                                stage.setScene(scene);
-                                stage.setMaximized(true);
-                                stage.show();
-
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(AmministratoreController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    // }
-
-                }
-
-            }
+        albero.getSelectionModel().selectedItemProperty().addListener((ObservableValue observable, Object oldValue, Object newValue) -> {
+            selectedItem = (TreeItem<String>) newValue;
         });
-        
-        
-        
+
         //*** DOPPIO CLICK dell'elemento dell'albero
-        albero.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                //if (mouseEvent.getClickCount() == 2) {             
-                    try {
-                        System.out.println("Selected Text : " + selectedItem.getValue());
-                        
-                        switch(selectedItem.getValue()){
-                            case "assegna ditte" :
-                                Stage stage = (Stage) albero.getScene().getWindow();
-                                Parent node = FXMLLoader.load(getClass().getResource("/meilfx/ammin/utenti/AssegnaDitte.fxml"));
-                                Scene scene = new Scene(node);
-                                stage.setScene(scene);
-                                stage.setMaximized(true);
-                                stage.show();
-                                
-                        }
-                    } catch (IOException ex) {
-                        Logger.getLogger(AmministratoreController.class.getName()).log(Level.SEVERE, null, ex);
+        albero.setOnMouseClicked((MouseEvent mouseEvent) -> {
+            if (mouseEvent.getClickCount() == 2) {
+                try {
+                    System.out.println("Selected Text : " + selectedItem.getValue());
+                    
+                    switch(selectedItem.getValue()){
+                        case "assegna ditte a utenti" :
+                            Parent newRoot = FXMLLoader.load(getClass().getResource("/meilfx/ammin/utenti/AssegnaDitte.fxml"));
+                            STAGE.getScene().setRoot(newRoot);                                      
                     }
-               // }
+                    
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(AmministratoreController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         
+        //*** F2 su un elemento dell'albero
+        albero.setOnKeyReleased((KeyEvent keyEvent) -> {
+            if (keyEvent.getCode().equals(F2)) {
+                try {
+                    System.out.println("Selected Text : " + selectedItem.getValue());
+                    
+                    switch(selectedItem.getValue()){
+                        case "assegna ditte a utenti" :
+                            Parent newRoot = FXMLLoader.load(getClass().getResource("/meilfx/ammin/utenti/AssegnaDitte.fxml"));
+                            STAGE.getScene().setRoot(newRoot);           
+                            
+                    }
+                    
+                    
+                } catch (IOException ex) {
+                    Logger.getLogger(AmministratoreController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
         
     }
+    // ***** FINE METODO CREA ALBERO
     
-    public void addToAlbero(TreeItem<String> nodo, List<String> listaMasCorrenti) {
-        int i;
-        for (i = 0; i < listaMasCorrenti.size(); i++) {
-            nodo.getChildren().add(eseguiFiglo(listaMasCorrenti.get(i), nodo));
-        }
+    
+    
+
+    public void btnIndietroAction() throws IOException {
+        Parent backRoot = FXMLLoader.load(getClass().getResource("/meilfx/elencoditte/ElencoDitte.fxml"));
+        STAGE.getScene().setRoot(backRoot);
     }
 
-    public TreeItem<String> eseguiFiglo(String mastro, TreeItem<String> parent) {
-        TreeItem<String> foglia = new TreeItem<>();
-        foglia.setValue(mastro);
+    public void btnEsciAction() throws IOException {
+        btnEsci.btnEsciActionGlobal();
+    }
 
-        return foglia;
-    }
-    
-    
-    public void btnEsciAction() throws IOException{
-        btnEsci.btnEsciAction(btnStampa);
-    }
-    
 }

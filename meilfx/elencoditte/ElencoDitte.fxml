@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="660.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meilfx.elencoditte.ElencoDitteController">
+<BorderPane xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="meilfx.elencoditte.ElencoDitteController">
    <center>
       <AnchorPane id="AnchorPane" prefHeight="599.0" prefWidth="768.0">
          <children>
@@ -15,8 +15,9 @@
       </AnchorPane>
    </center>
    <top>
-      <AnchorPane prefHeight="24.0" prefWidth="1259.0" style="-fx-background-color: #ccddff;" BorderPane.alignment="CENTER">
+      <AnchorPane prefHeight="25.0" prefWidth="1024.0" style="-fx-background-color: #ccddff;" BorderPane.alignment="CENTER">
          <children>
+            <Label fx:id="lblTopSinistra" layoutX="11.0" layoutY="4.0" />
             <Label fx:id="lblTopCentro" layoutX="399.0" layoutY="4.0" />
             <Label fx:id="lblTopDestra" layoutX="872.0" layoutY="4.0" />
          </children>
@@ -25,16 +26,17 @@
    <left>
       <AnchorPane prefHeight="599.0" prefWidth="336.0" BorderPane.alignment="CENTER">
          <children>
-            <TreeView fx:id="albero" layoutX="11.0" prefHeight="599.0" prefWidth="314.0" />
+            <TreeView fx:id="albero" layoutX="11.0" prefHeight="600.0" prefWidth="315.0" />
          </children>
       </AnchorPane>
    </left>
    <bottom>
       <AnchorPane prefHeight="42.0" prefWidth="1259.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnStampa" layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
+            <Button fx:id="btnStampa" disable="true" layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
             <Button fx:id="btnRegistra" disable="true" layoutX="728.0" layoutY="9.0" mnemonicParsing="false" text="registra" />
-            <Button fx:id="btnESci" layoutX="932.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnEsciAction" prefHeight="25.0" prefWidth="58.0" text="esci" />
+            <Button layoutX="932.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnEsciAction" prefHeight="25.0" prefWidth="73.0" text="ESC-esci" />
+            <Button fx:id="btnIndietro" layoutX="640.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnIndietroAction" text="F1-indietro" />
          </children>
       </AnchorPane>
    </bottom>

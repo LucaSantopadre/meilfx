@@ -14,6 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import meilfx.panels.Schermo;
+import static meilfx.panels.Schermo.STAGE;
 
 /**
  *
@@ -22,10 +24,10 @@ import javafx.stage.Stage;
 public class Bottone extends Button{
     
     //non passare lo stesso bottone su cui si fa l'action
-    public void btnEsciAction(Button btnEsci) throws IOException {
+    public void btnEsciActionGlobal() throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Conferma chiusura");
-        alert.setHeaderText("Sei sicuro di voler uscire dal programma?");
+        alert.setHeaderText("Sei sicuro di voler uscire?");
 
         ButtonType buttonTypeNo = new ButtonType("NO");
         ButtonType buttonTypeSi = new ButtonType("SI");
@@ -34,12 +36,8 @@ public class Bottone extends Button{
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeSi) {
-            Stage stage = (Stage) btnEsci.getScene().getWindow();
-            Parent node = FXMLLoader.load(getClass().getResource("/meilfx/login/Login.fxml"));
-            Scene scene = new Scene(node);
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+            Parent newRoot = FXMLLoader.load(getClass().getResource("/meilfx/login/Login.fxml"));
+            STAGE.getScene().setRoot(newRoot); 
         }
     } 
 }

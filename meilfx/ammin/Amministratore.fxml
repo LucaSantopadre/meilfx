@@ -13,6 +13,7 @@
    <top>
       <AnchorPane prefHeight="24.0" prefWidth="1259.0" style="-fx-background-color: #ccddff;" BorderPane.alignment="CENTER">
          <children>
+            <Label fx:id="lblTopSinistra" layoutX="11.0" layoutY="4.0" />
             <Label fx:id="lblTopCentro" layoutX="399.0" layoutY="4.0" />
             <Label fx:id="lblTopDestra" layoutX="872.0" layoutY="4.0" />
          </children>
@@ -28,9 +29,10 @@
    <bottom>
       <AnchorPane prefHeight="42.0" prefWidth="1259.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="btnStampa" layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
+            <Button fx:id="btnIndietro" layoutX="631.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnIndietroAction" text="F1-indietro" />
             <Button fx:id="btnRegistra" disable="true" layoutX="728.0" layoutY="9.0" mnemonicParsing="false" text="registra" />
-            <Button layoutX="932.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnEsciAction" prefHeight="25.0" prefWidth="58.0" text="esci" />
+            <Button fx:id="btnStampa" layoutX="813.0" layoutY="9.0" mnemonicParsing="false" text="stampa" />
+            <Button layoutX="926.0" layoutY="9.0" mnemonicParsing="false" onAction="#btnEsciAction" prefHeight="25.0" prefWidth="64.0" text="ESC-esci" />
          </children>
       </AnchorPane>
    </bottom>
